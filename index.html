@@ -3,44 +3,839 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Finance Advisor Bot</title>
+    <meta name="description" content="Personal Finance Advisor Bot - Smart Budgeting & AI-Driven Savings Insights. Track income, manage expenses, and plan budgets.">
+    <title>Personal Finance Advisor Bot 💰 | Smart AI Budgeting Assistant</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Personal Finance Advisor Bot 💰</h1>
-            <p>Smart Budgeting & AI-Driven Savings Insights</p>
-        </header>
-        <main>
-            <section class="cards-grid">
-                <div class="card"><h3>Total Income</h3><p id="income-val">₹0</p></div>
-                <div class="card"><h3>Total Expenses</h3><p id="expense-val">₹0</p></div>
-                <div class="card"><h3>Remaining Balance</h3><p id="balance-val">₹0</p></div>
-            </section>
-            <section class="form-section">
-                <h2>Add Transaction</h2>
-                <form id="tx-form">
-                    <select id="kind" required>
-                        <option value="income">Income</option>
-                        <option value="expense" selected>Expense</option>
-                    </select>
-                    <input type="text" id="category" placeholder="Category (e.g., Food, Rent, Salary)" required>
-                    <input type="number" id="amount" placeholder="Amount (₹)" min="1" step="any" required>
-                    <input type="text" id="note" placeholder="Note (Optional)">
-                    <button type="submit">Add</button>
-                </form>
-            </section>
-            <section class="insight-section card">
-                <h3 id="insight-title">AI Insight Loading...</h3>
-                <p id="insight-text">Please wait...</p>
-            </section>
-            <section class="tx-history">
-                <h2>Recent Transactions</h2>
-                <ul id="tx-list"></ul>
-            </section>
-        </main>
-    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- ================================================== -->
+    <!-- TOP NAVIGATION BAR                                 -->
+    <!-- ================================================== -->
+    <header class="navbar" id="topNav">
+        <div class="nav-container">
+            <a href="#home" class="nav-brand">
+                <span class="brand-icon">💰</span>
+                <span class="brand-text">Personal Finance <strong>Advisor Bot</strong></span>
+            </a>
+
+            <button class="mobile-toggle" id="mobileMenuBtn" aria-label="Toggle Navigation Menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+
+            <nav class="nav-menu" id="navMenu">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#dashboard" class="nav-link">Dashboard</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#contact" class="nav-link">Contact</a>
+                <a href="#dashboard" class="nav-cta-btn">Open App</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ================================================== -->
+    <!-- 2. HERO SECTION                                    -->
+    <!-- ================================================== -->
+    <section class="hero-section" id="home">
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    <span>AI-Powered Financial Wellness</span>
+                </div>
+                <h1 class="hero-title">Personal Finance Advisor Bot 💰</h1>
+                <h2 class="hero-subtitle">Smart Budgeting & AI-Driven Savings Insights</h2>
+                <p class="hero-description">
+                    An intelligent personal finance assistant that helps users track income, manage expenses, understand spending patterns and make smarter saving decisions.
+                </p>
+                <div class="hero-actions">
+                    <a href="#dashboard" class="btn btn-primary btn-lg">
+                        <span>Open Dashboard</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+                    <a href="#features" class="btn btn-outline btn-lg">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                        <span>Explore Features</span>
+                    </a>
+                </div>
+
+                <div class="hero-stats-row">
+                    <div class="stat-mini-pill">
+                        <span class="stat-mini-val">100%</span>
+                        <span class="stat-mini-lbl">Free & Open Source</span>
+                    </div>
+                    <div class="stat-mini-pill">
+                        <span class="stat-mini-val">SQLite</span>
+                        <span class="stat-mini-lbl">Local Privacy</span>
+                    </div>
+                    <div class="stat-mini-pill">
+                        <span class="stat-mini-val">Real-time</span>
+                        <span class="stat-mini-lbl">AI Evaluation</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Interactive Visual / Illustration -->
+            <div class="hero-visual-wrapper">
+                <div class="hero-card-canvas">
+                    <!-- Floating Card: Balance -->
+                    <div class="floating-stat-card card-balance">
+                        <div class="f-icon">💼</div>
+                        <div class="f-details">
+                            <span class="f-label">Remaining Balance</span>
+                            <span class="f-value" id="heroBalancePreview">₹14,700</span>
+                        </div>
+                        <span class="f-badge positive">+58.8% Saved</span>
+                    </div>
+
+                    <!-- Floating Card: Income -->
+                    <div class="floating-stat-card card-income">
+                        <div class="f-icon">📈</div>
+                        <div class="f-details">
+                            <span class="f-label">Monthly Income</span>
+                            <span class="f-value">₹25,000</span>
+                        </div>
+                    </div>
+
+                    <!-- Floating Card: Expense -->
+                    <div class="floating-stat-card card-expense">
+                        <div class="f-icon">📉</div>
+                        <div class="f-details">
+                            <span class="f-label">Total Expenses</span>
+                            <span class="f-value">₹10,300</span>
+                        </div>
+                    </div>
+
+                    <!-- Central Bot Mascot Visual -->
+                    <div class="hero-illustration">
+                        <div class="bot-badge-glow">
+                            <div class="bot-avatar">🤖</div>
+                        </div>
+                        <div class="speech-bubble">
+                            <span class="speech-tag">AI ADVISOR TIP</span>
+                            <p>"Your spending is well within budget. Aim to set aside ₹5,000 for emergency savings this month!"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================== -->
+    <!-- 3. DASHBOARD MAIN SECTION                          -->
+    <!-- ================================================== -->
+    <section class="section dashboard-section" id="dashboard">
+        <div class="container">
+            <div class="section-header-flex">
+                <div>
+                    <span class="section-tag">Financial Overview</span>
+                    <h2 class="section-title">Your Financial Dashboard</h2>
+                    <p class="section-subtitle">Real-time balances and transaction summary calculated from SQLite database</p>
+                </div>
+                <div class="dashboard-controls">
+                    <button class="btn btn-sm btn-secondary" id="loadDemoDataBtn" title="Load sample dataset for viva/demo presentation">
+                        <span>⚡ Load Demo Data</span>
+                    </button>
+                    <button class="btn btn-sm btn-light" id="resetDataBtn" title="Clear all transactions">
+                        <span>🗑️ Reset</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Three Main KPI Cards -->
+            <div class="kpi-grid">
+                <!-- Total Income Card -->
+                <div class="kpi-card card-income-border">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Total Income</span>
+                        <div class="kpi-icon icon-income">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                        </div>
+                    </div>
+                    <div class="kpi-amount text-income" id="totalIncomeDisplay">₹0</div>
+                    <div class="kpi-footer">
+                        <span class="kpi-badge badge-green">Inflow</span>
+                        <span class="kpi-meta">All confirmed sources</span>
+                    </div>
+                </div>
+
+                <!-- Total Expenses Card -->
+                <div class="kpi-card card-expense-border">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Total Expenses</span>
+                        <div class="kpi-icon icon-expense">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
+                        </div>
+                    </div>
+                    <div class="kpi-amount text-expense" id="totalExpensesDisplay">₹0</div>
+                    <div class="kpi-footer">
+                        <span class="kpi-badge badge-red">Outflow</span>
+                        <span class="kpi-meta" id="expenseRatioText">0% of income</span>
+                    </div>
+                </div>
+
+                <!-- Remaining Balance Card -->
+                <div class="kpi-card card-balance-border">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Remaining Balance</span>
+                        <div class="kpi-icon icon-balance">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        </div>
+                    </div>
+                    <div class="kpi-amount text-balance" id="remainingBalanceDisplay">₹0</div>
+                    <div class="kpi-footer">
+                        <span class="kpi-badge badge-blue" id="balanceStatusBadge">Net Savings</span>
+                        <span class="kpi-meta" id="savingsRateText">Available capital</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle Grid: Add Transaction + AI Financial Insight -->
+            <div class="dashboard-dual-grid">
+                
+                <!-- ================================================== -->
+                <!-- 4. ADD TRANSACTION FORM                            -->
+                <!-- ================================================== -->
+                <div class="content-card" id="addTransactionCard">
+                    <div class="card-header">
+                        <div class="card-icon-badge">➕</div>
+                        <div>
+                            <h3 class="card-title">Add Transaction</h3>
+                            <p class="card-subtitle">Record a new income entry or expense purchase</p>
+                        </div>
+                    </div>
+
+                    <form id="transactionForm" class="transaction-form" novalidate>
+                        <!-- Transaction Type Toggle -->
+                        <div class="form-group">
+                            <label class="form-label">Transaction Type <span class="required">*</span></label>
+                            <div class="type-toggle-group">
+                                <label class="type-toggle-label active" id="typeLabelExpense">
+                                    <input type="radio" name="kind" value="expense" checked class="type-radio" id="typeExpense">
+                                    <span class="type-tag expense-tag">📉 Expense</span>
+                                </label>
+                                <label class="type-toggle-label" id="typeLabelIncome">
+                                    <input type="radio" name="kind" value="income" class="type-radio" id="typeIncome">
+                                    <span class="type-tag income-tag">📈 Income</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Category Selection -->
+                        <div class="form-group">
+                            <label for="categoryInput" class="form-label">Category <span class="required">*</span></label>
+                            <select id="categoryInput" name="category" class="form-control" required>
+                                <option value="" disabled selected>Select a category</option>
+                                <option value="Food">🍽️ Food & Groceries</option>
+                                <option value="Rent">🏠 Rent & Utilities</option>
+                                <option value="Transport">🚗 Transport & Fuel</option>
+                                <option value="Education">📚 Education & Books</option>
+                                <option value="Shopping">🛍️ Shopping</option>
+                                <option value="Entertainment">🎬 Entertainment</option>
+                                <option value="Salary">💼 Salary / Stipend</option>
+                                <option value="Healthcare">💊 Healthcare</option>
+                                <option value="Other">📦 Other</option>
+                            </select>
+                        </div>
+
+                        <!-- Amount Input -->
+                        <div class="form-group">
+                            <label for="amountInput" class="form-label">Amount (₹) <span class="required">*</span></label>
+                            <div class="currency-input-wrap">
+                                <span class="currency-symbol">₹</span>
+                                <input type="number" id="amountInput" name="amount" class="form-control with-symbol" placeholder="e.g. 1500" min="1" step="any" required>
+                            </div>
+                        </div>
+
+                        <!-- Note / Description -->
+                        <div class="form-group">
+                            <label for="noteInput" class="form-label">Note <span class="optional">(Optional)</span></label>
+                            <input type="text" id="noteInput" name="note" class="form-control" placeholder="e.g. Monthly grocery supplies" maxlength="150">
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary btn-block" id="submitTransactionBtn">
+                            <span class="btn-text">Add Transaction</span>
+                            <span class="spinner hidden" id="transactionSpinner"></span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- ================================================== -->
+                <!-- 6. AI FINANCIAL INSIGHT CARD                       -->
+                <!-- ================================================== -->
+                <div class="content-card ai-insight-card" id="aiInsightCard">
+                    <div class="card-header ai-header">
+                        <div class="ai-avatar-wrap">
+                            <div class="ai-avatar">🤖</div>
+                            <span class="ai-pulse-ring"></span>
+                        </div>
+                        <div>
+                            <div class="ai-badge-row">
+                                <h3 class="card-title">AI Financial Insight 🤖</h3>
+                                <span class="ai-status-pill" id="aiStatusPill">Live Engine</span>
+                            </div>
+                            <p class="card-subtitle">Automated financial heuristics and rule-based guidance</p>
+                        </div>
+                    </div>
+
+                    <!-- AI Speech / Recommendation Box -->
+                    <div class="ai-speech-box" id="aiSpeechBox">
+                        <div class="ai-robot-badge">ADVISOR REPORT</div>
+                        <p class="ai-advice-text" id="aiAdviceText">
+                            Welcome! Start by adding your monthly income and transactions so the AI can evaluate your spending ratio.
+                        </p>
+                    </div>
+
+                    <!-- AI Metric Badges -->
+                    <div class="ai-metrics-grid">
+                        <div class="ai-metric-item">
+                            <span class="ai-metric-label">Health Score</span>
+                            <div class="health-score-wrap">
+                                <span class="ai-metric-val" id="healthScoreDisplay">--</span>
+                                <span class="health-score-max">/100</span>
+                            </div>
+                            <div class="progress-bar-bg mini">
+                                <div class="progress-bar-fill green" id="healthScoreBar" style="width: 50%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="ai-metric-item">
+                            <span class="ai-metric-label">Savings Rate</span>
+                            <span class="ai-metric-val text-income" id="savingsRateDisplay">--%</span>
+                            <span class="ai-metric-sub" id="savingsRateSub">Target: 20%+</span>
+                        </div>
+
+                        <div class="ai-metric-item">
+                            <span class="ai-metric-label">Top Expense Risk</span>
+                            <span class="ai-metric-val text-expense" id="topExpenseCategoryDisplay">None</span>
+                            <span class="ai-metric-sub" id="topExpenseAmountDisplay">₹0</span>
+                        </div>
+                    </div>
+
+                    <!-- Smart Rule Recommendation Box -->
+                    <div class="ai-rule-box">
+                        <div class="rule-icon">💡</div>
+                        <div class="rule-text">
+                            <strong>50/30/20 Budgeting Rule:</strong>
+                            <span id="aiRuleAdvice">Allocate 50% for Needs, 30% for Wants, and 20% for Savings.</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Lower Grid: 7. Expense Analysis + 8. Monthly Budget Planner -->
+            <div class="dashboard-dual-grid mt-4">
+                
+                <!-- ================================================== -->
+                <!-- 7. EXPENSE ANALYSIS SECTION                        -->
+                <!-- ================================================== -->
+                <div class="content-card" id="expenseAnalysisSection">
+                    <div class="card-header">
+                        <div class="card-icon-badge">📊</div>
+                        <div>
+                            <h3 class="card-title">Expense Analysis</h3>
+                            <p class="card-subtitle">Category-wise breakdown of expenditures</p>
+                        </div>
+                    </div>
+
+                    <!-- Analysis Overview Metrics -->
+                    <div class="analysis-stats-row">
+                        <div class="a-stat">
+                            <span class="a-stat-label">Total Spending</span>
+                            <span class="a-stat-val text-expense" id="analysisTotalSpending">₹0</span>
+                        </div>
+                        <div class="a-stat">
+                            <span class="a-stat-label">Highest Category</span>
+                            <span class="a-stat-val" id="analysisHighestCat">None</span>
+                        </div>
+                        <div class="a-stat">
+                            <span class="a-stat-label">Expense % of Income</span>
+                            <span class="a-stat-val" id="analysisExpensePct">0%</span>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Category Bar Chart -->
+                    <div class="chart-container">
+                        <h4 class="chart-title">Spending by Category</h4>
+                        <div id="categoryChartBars" class="category-bars-list">
+                            <div class="chart-empty-state">No expense transactions recorded yet.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================================================== -->
+                <!-- 8. MONTHLY BUDGET PLANNER                          -->
+                <!-- ================================================== -->
+                <div class="content-card" id="budgetPlannerSection">
+                    <div class="card-header">
+                        <div class="card-icon-badge">🎯</div>
+                        <div>
+                            <h3 class="card-title">Monthly Budget Planner</h3>
+                            <p class="card-subtitle">Set financial targets and track your monthly budget limit</p>
+                        </div>
+                    </div>
+
+                    <!-- Budget Inputs Form -->
+                    <div class="budget-inputs-row">
+                        <div class="form-group flex-1">
+                            <label for="monthlyIncomeInput" class="form-label">Monthly Income (₹)</label>
+                            <input type="number" id="monthlyIncomeInput" class="form-control" placeholder="e.g. 25000" min="0">
+                        </div>
+                        <div class="form-group flex-1">
+                            <label for="monthlyBudgetInput" class="form-label">Monthly Budget (₹)</label>
+                            <input type="number" id="monthlyBudgetInput" class="form-control" placeholder="e.g. 20000" min="0">
+                        </div>
+                    </div>
+
+                    <!-- Budget Progress Tracker -->
+                    <div class="budget-tracker-box">
+                        <div class="budget-info-row">
+                            <span class="budget-lbl">Budget Utilization</span>
+                            <span class="budget-pct" id="budgetPercentageText">0%</span>
+                        </div>
+
+                        <!-- Progress Bar Container -->
+                        <div class="progress-bar-bg large">
+                            <div class="progress-bar-fill blue" id="budgetProgressBar" style="width: 0%;"></div>
+                        </div>
+
+                        <div class="budget-details-grid">
+                            <div class="b-metric">
+                                <span class="b-lbl">Budget Used</span>
+                                <span class="b-val text-expense" id="budgetUsedDisplay">₹0</span>
+                            </div>
+                            <div class="b-metric">
+                                <span class="b-lbl">Total Budget</span>
+                                <span class="b-val" id="budgetTotalDisplay">₹0</span>
+                            </div>
+                            <div class="b-metric">
+                                <span class="b-lbl">Remaining Budget</span>
+                                <span class="b-val text-income" id="budgetRemainingDisplay">₹0</span>
+                            </div>
+                        </div>
+
+                        <div class="budget-status-tip" id="budgetStatusTip">
+                            ℹ️ Enter your monthly budget to track real-time utilization.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ================================================== -->
+            <!-- 5. RECENT TRANSACTIONS TABLE                       -->
+            <!-- ================================================== -->
+            <div class="content-card mt-4" id="recentTransactionsSection">
+                <div class="card-header-flex">
+                    <div class="card-header">
+                        <div class="card-icon-badge">📝</div>
+                        <div>
+                            <h3 class="card-title">Recent Transactions</h3>
+                            <p class="card-subtitle">Complete ledger of all recorded income and expenses (SQLite)</p>
+                        </div>
+                    </div>
+                    <div class="table-actions">
+                        <input type="text" id="transactionSearchInput" class="form-control form-control-sm" placeholder="🔍 Filter category or note...">
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="data-table" id="transactionsTable">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Category</th>
+                                <th>Amount</th>
+                                <th>Note</th>
+                                <th>Date & Time</th>
+                                <th class="text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionsTableBody">
+                            <!-- Populated dynamically via JS -->
+                            <tr>
+                                <td colspan="6" class="text-center py-4 text-muted">
+                                    No transactions yet. Add your first income or expense.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+
+    <!-- ================================================== -->
+    <!-- 11. PROJECT FEATURES SECTION                       -->
+    <!-- ================================================== -->
+    <section class="section features-section" id="features">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-tag">Core Capabilities</span>
+                <h2 class="section-title">Key Features</h2>
+                <p class="section-subtitle">Everything you need to master your student finances in one cohesive dashboard</p>
+            </div>
+
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="feature-card">
+                    <div class="feature-icon icon-green">💵</div>
+                    <h3 class="feature-title">1. Income Tracking</h3>
+                    <p class="feature-desc">Track monthly and regular income from internships, stipends, freelance projects, or parental allowances seamlessly.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-card">
+                    <div class="feature-icon icon-red">🧾</div>
+                    <h3 class="feature-title">2. Expense Management</h3>
+                    <p class="feature-desc">Record and categorize daily expenses across food, rent, education, transport, and leisure with instant ledger updates.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-card">
+                    <div class="feature-icon icon-purple">🤖</div>
+                    <h3 class="feature-title">3. Smart Insights</h3>
+                    <p class="feature-desc">Get financial insights based on spending patterns, detecting high-risk categories and calculating your financial wellness score.</p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="feature-card">
+                    <div class="feature-icon icon-blue">🎯</div>
+                    <h3 class="feature-title">4. Budget Planning</h3>
+                    <p class="feature-desc">Set budgets and monitor spending with visual progress bars that signal when expenditures approach dangerous thresholds.</p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="feature-card">
+                    <div class="feature-icon icon-gold">🌱</div>
+                    <h3 class="feature-title">5. Savings Guidance</h3>
+                    <p class="feature-desc">Understand remaining balance and improve saving habits with recommended guidelines like the 50/30/20 budgeting rule.</p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="feature-card">
+                    <div class="feature-icon icon-indigo">📚</div>
+                    <h3 class="feature-title">6. Transaction History</h3>
+                    <p class="feature-desc">View all recorded financial transactions with timestamped records, intuitive color tags, and search filtering.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================== -->
+    <!-- 12. HOW IT WORKS                                   -->
+    <!-- ================================================== -->
+    <section class="section how-it-works-section" id="how-it-works">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-tag">Simple Process</span>
+                <h2 class="section-title">How It Works</h2>
+                <p class="section-subtitle">A seamless 4-step workflow to master your personal finance</p>
+            </div>
+
+            <div class="workflow-steps-grid">
+                <!-- Step 1 -->
+                <div class="workflow-step-card">
+                    <div class="step-number-badge">1</div>
+                    <div class="step-icon">💰</div>
+                    <h3 class="step-title">Enter Income</h3>
+                    <p class="step-desc">Input your monthly earnings or stipend to establish your total available budget baseline.</p>
+                </div>
+
+                <div class="step-connector">➔</div>
+
+                <!-- Step 2 -->
+                <div class="workflow-step-card">
+                    <div class="step-number-badge">2</div>
+                    <div class="step-icon">🛒</div>
+                    <h3 class="step-title">Record Expenses</h3>
+                    <p class="step-desc">Log daily expenditures across predefined categories like Food, Transport, Rent, and Education.</p>
+                </div>
+
+                <div class="step-connector">➔</div>
+
+                <!-- Step 3 -->
+                <div class="workflow-step-card">
+                    <div class="step-number-badge">3</div>
+                    <div class="step-icon">📈</div>
+                    <h3 class="step-title">Analyze Spending</h3>
+                    <p class="step-desc">The dashboard automatically aggregates transaction amounts and generates category breakdown bars.</p>
+                </div>
+
+                <div class="step-connector">➔</div>
+
+                <!-- Step 4 -->
+                <div class="workflow-step-card">
+                    <div class="step-number-badge">4</div>
+                    <div class="step-icon">🤖</div>
+                    <h3 class="step-title">Get Financial Insights</h3>
+                    <p class="step-desc">Receive real-time AI guidance, health scoring, and actionable savings advice tailored to your spending habits.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================== -->
+    <!-- 13. ABOUT PROJECT & 14. TECHNOLOGY STACK           -->
+    <!-- ================================================== -->
+    <section class="section about-section" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <!-- About Info -->
+                <div class="about-card">
+                    <span class="section-tag">Project Background</span>
+                    <h2 class="section-title">About the Project</h2>
+                    <p class="about-body">
+                        Personal Finance Advisor Bot is a student-focused software project designed to simplify personal financial management. It combines transaction tracking, budgeting and intelligent financial insights in one easy-to-use platform.
+                    </p>
+                    <div class="about-pill-box">
+                        <span class="badge-tag">Project Type: Software / AI-enabled Finance Application</span>
+                        <span class="badge-tag">Target Users: College Students & Young Professionals</span>
+                    </div>
+                    <p class="disclaimer-note">
+                        ⚠️ <em>Disclaimer: This application is developed for educational and academic project presentation purposes. It illustrates automated financial rule-based heuristics and budgeting algorithms and does not constitute certified legal or financial investment advisory.</em>
+                    </p>
+                </div>
+
+                <!-- Technology Stack Cards -->
+                <!-- ================================================== -->
+                <!-- 14. TECHNOLOGY STACK                               -->
+                <!-- ================================================== -->
+                <div class="tech-stack-card">
+                    <span class="section-tag">Under the Hood</span>
+                    <h2 class="section-title">Technology Stack</h2>
+                    <div class="tech-badges-grid">
+                        <div class="tech-item">
+                            <span class="tech-icon">🐍</span>
+                            <span class="tech-name">Python</span>
+                            <span class="tech-role">Backend Engine</span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-icon">🌶️</span>
+                            <span class="tech-name">Flask</span>
+                            <span class="tech-role">REST Web Framework</span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-icon">🗄️</span>
+                            <span class="tech-name">SQLite</span>
+                            <span class="tech-role">Relational Database</span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-icon">🌐</span>
+                            <span class="tech-name">HTML5</span>
+                            <span class="tech-role">Semantic Structure</span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-icon">🎨</span>
+                            <span class="tech-name">CSS3</span>
+                            <span class="tech-role">Modern Responsive UI</span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-icon">⚡</span>
+                            <span class="tech-name">JavaScript</span>
+                            <span class="tech-role">Async Client Logic</span>
+                        </div>
+                        <div class="tech-item full-width">
+                            <span class="tech-icon">🔗</span>
+                            <span class="tech-name">REST API Endpoints</span>
+                            <span class="tech-role">Decoupled JSON Architecture</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================================================== -->
+            <!-- 15. PROJECT ARCHITECTURE                           -->
+            <!-- ================================================== -->
+            <div class="architecture-card mt-4">
+                <div class="section-header text-center">
+                    <span class="section-tag">System Design</span>
+                    <h2 class="section-title">Project Architecture</h2>
+                    <p class="section-subtitle">Modular data pipeline from user interaction to backend intelligence</p>
+                </div>
+
+                <div class="arch-flow-diagram">
+                    <div class="arch-node">
+                        <div class="arch-icon">👤</div>
+                        <span class="arch-title">User</span>
+                        <span class="arch-sub">Browser Client</span>
+                    </div>
+
+                    <div class="arch-arrow">➔</div>
+
+                    <div class="arch-node">
+                        <div class="arch-icon">🖥️</div>
+                        <span class="arch-title">Frontend</span>
+                        <span class="arch-sub">HTML5 / CSS / JS</span>
+                    </div>
+
+                    <div class="arch-arrow">➔</div>
+
+                    <div class="arch-node">
+                        <div class="arch-icon">⚡</div>
+                        <span class="arch-title">Flask REST API</span>
+                        <span class="arch-sub">Routing & Validation</span>
+                    </div>
+
+                    <div class="arch-arrow">➔</div>
+
+                    <div class="arch-node">
+                        <div class="arch-icon">🗄️</div>
+                        <span class="arch-title">SQLite Database</span>
+                        <span class="arch-sub">finance.db Persistence</span>
+                    </div>
+
+                    <div class="arch-arrow">➔</div>
+
+                    <div class="arch-node">
+                        <div class="arch-icon">🤖</div>
+                        <span class="arch-title">AI Insight Engine</span>
+                        <span class="arch-sub">Heuristics & Health Score</span>
+                    </div>
+
+                    <div class="arch-arrow">➔</div>
+
+                    <div class="arch-node highlight">
+                        <div class="arch-icon">📊</div>
+                        <span class="arch-title">Dashboard</span>
+                        <span class="arch-sub">Real-time Visualization</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ================================================== -->
+    <!-- 16. CONTACT / PROJECT INFORMATION SECTION          -->
+    <!-- ================================================== -->
+    <section class="section contact-section" id="contact">
+        <div class="container">
+            <div class="contact-card">
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <span class="section-tag">Get in Touch</span>
+                        <h2 class="section-title">Project Feedback & Inquiries</h2>
+                        <p class="contact-desc">
+                            Have questions about Personal Finance Advisor Bot or looking to learn more about the project architecture? Leave a message below.
+                        </p>
+                        <div class="contact-points">
+                            <div class="c-point">
+                                <span class="c-icon">📍</span>
+                                <div>
+                                    <strong>Institution:</strong>
+                                    <p>Campus AI Final Project / College Seminar</p>
+                                </div>
+                            </div>
+                            <div class="c-point">
+                                <span class="c-icon">🎓</span>
+                                <div>
+                                    <strong>Academic Domain:</strong>
+                                    <p>Artificial Intelligence & Full-Stack Web Development</p>
+                                </div>
+                            </div>
+                            <div class="c-point">
+                                <span class="c-icon">💻</span>
+                                <div>
+                                    <strong>Repository:</strong>
+                                    <p>Local Flask + SQLite Engine</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <div class="contact-form-wrap">
+                        <form id="contactForm" class="contact-form" novalidate>
+                            <div class="form-group">
+                                <label for="contactName" class="form-label">Your Name <span class="required">*</span></label>
+                                <input type="text" id="contactName" name="name" class="form-control" placeholder="e.g. Rahul Sharma" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contactEmail" class="form-label">Email Address <span class="required">*</span></label>
+                                <input type="email" id="contactEmail" name="email" class="form-control" placeholder="e.g. rahul@example.com" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contactMessage" class="form-label">Message <span class="required">*</span></label>
+                                <textarea id="contactMessage" name="message" class="form-control" rows="4" placeholder="Share your feedback or questions about the project..." required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block" id="contactSubmitBtn">
+                                <span>Send Message</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================== -->
+    <!-- PROFESSIONAL FOOTER                                -->
+    <!-- ================================================== -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <span class="f-brand-icon">💰</span>
+                    <span class="f-brand-title">Personal Finance Advisor Bot</span>
+                    <p class="f-brand-desc">Smart Budgeting & AI-Driven Savings Insights for student financial empowerment.</p>
+                </div>
+
+                <div class="footer-links-col">
+                    <h4 class="f-col-title">Navigation</h4>
+                    <a href="#home">Home</a>
+                    <a href="#dashboard">Dashboard</a>
+                    <a href="#features">Features</a>
+                </div>
+
+                <div class="footer-links-col">
+                    <h4 class="f-col-title">Project Docs</h4>
+                    <a href="#about">About Project</a>
+                    <a href="#how-it-works">Workflow</a>
+                    <a href="/api/summary" target="_blank">Summary API (JSON)</a>
+                    <a href="/health" target="_blank">Health Check</a>
+                </div>
+
+                <div class="footer-links-col">
+                    <h4 class="f-col-title">Stack</h4>
+                    <span>Python & Flask</span>
+                    <span>SQLite3</span>
+                    <span>HTML5 & CSS3</span>
+                    <span>Vanilla JavaScript</span>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Personal Finance Advisor Bot. Built for Student Project Presentation & Viva Demo.</p>
+                <div class="footer-bottom-links">
+                    <a href="#home">Back to Top ↑</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script File -->
     <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>
