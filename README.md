@@ -37,7 +37,7 @@ A modern, full-stack personal finance web application built for college students
 | `POST`| `/api/contact` | Handles project inquiry form submissions | `{"name": "...", "email": "...", "message": "..."}` |
 
 
-``
+
 ---
 ### Personal Finance Advisor Bot 💰
 
