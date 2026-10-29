@@ -15,23 +15,10 @@ A modern, full-stack personal finance web application built for college students
 - **1-Click Demo Data Loader ⚡**: Pre-loaded with realistic college student financial records (₹25,000 Stipend, Food, Transport, Books, Shopping) for instant demonstration during vivas.
 
 ---
-## Project Structure
-
-```text
-personal-finance-advisor-bot/
-├── app.py
-├── requirements.txt
-├── README.md
-├── .gitignore
-├── templates/
-│   └── index.html
-└── static/
-    ├── style.css
-    └── app.js
 
 
 
-```
+
 
 
 ## 🔌 REST API Endpoints
