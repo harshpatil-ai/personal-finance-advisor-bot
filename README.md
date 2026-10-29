@@ -55,7 +55,7 @@ personal-finance-advisor-bot/
 ### Personal Finance Advisor Bot 💰
 
 An AI-style personal finance assistant built with **Python, Flask, SQLite and JavaScript**.
-```
+``
 ## Features
 - Income and expense tracking
 - Category-wise spending analysis
@@ -66,7 +66,7 @@ An AI-style personal finance assistant built with **Python, Flask, SQLite and Ja
 - SQLite database for persistent local data
 - Demo/fallback advisor mode that works without an external AI API
 
-```
+``
 ## Project Documentation
 
 📄[ https://github.com/harshpatil-ai/personal-finance-advisor-bot/blob/3acffbbc70ef5a73271c31f829e6329df39d4f5c/Personal_Finance_Advisor_Bot_%20document_final.pdf ]
