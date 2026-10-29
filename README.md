@@ -15,7 +15,19 @@ A modern, full-stack personal finance web application built for college students
 - **1-Click Demo Data Loader ⚡**: Pre-loaded with realistic college student financial records (₹25,000 Stipend, Food, Transport, Books, Shopping) for instant demonstration during vivas.
 
 ---
+## Project Structure
 
+```text
+personal-finance-advisor-bot/
+├── app.py
+├── requirements.txt
+├── README.md
+├── .gitignore
+├── templates/
+│   └── index.html
+└── static/
+    ├── style.css
+    └── app.js
 ## 🛠️ Technology Stack
 
 | Layer | Technology | Purpose |
@@ -61,7 +73,6 @@ An AI-style personal finance assistant built with **Python, Flask, SQLite and Ja
 - Demo/fallback advisor mode that works without an external AI API
 
 ```
-
 ## Project Documentation
 
 📄[ https://github.com/harshpatil-ai/personal-finance-advisor-bot/blob/3acffbbc70ef5a73271c31f829e6329df39d4f5c/Personal_Finance_Advisor_Bot_%20document_final.pdf ]
