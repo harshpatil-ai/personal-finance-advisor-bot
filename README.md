@@ -28,17 +28,10 @@ personal-finance-advisor-bot/
 └── static/
     ├── style.css
     └── app.js
-## 🛠️ Technology Stack
 
-| Layer | Technology | Purpose |
-| :--- | :--- | :--- |
-| **Backend** | Python 3.10+ / Flask | RESTful API endpoints, request validation, business logic |
-| **Database** | SQLite3 (`finance.db`) | Relational transaction ledger with ACID compliance |
-| **Frontend** | HTML5 Semantic Elements | Accessible and responsive document structure |
-| **Styling** | CSS3 (Custom Variables & Grid) | Modern card design, soft shadows, responsive typography |
-| **Client Logic**| Vanilla JavaScript (ES6+) | Asynchronous `fetch` calls, DOM updates, progress tracking |
 
----
+
+```
 
 
 ## 🔌 REST API Endpoints
@@ -56,12 +49,13 @@ personal-finance-advisor-bot/
 | `POST`| `/api/reset-data` | Clears all transactions from the database | None |
 | `POST`| `/api/contact` | Handles project inquiry form submissions | `{"name": "...", "email": "...", "message": "..."}` |
 
----
+
+``
 
 ### Personal Finance Advisor Bot 💰
 
 An AI-style personal finance assistant built with **Python, Flask, SQLite and JavaScript**.
-
+```
 ## Features
 - Income and expense tracking
 - Category-wise spending analysis
