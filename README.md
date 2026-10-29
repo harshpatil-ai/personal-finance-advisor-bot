@@ -48,38 +48,6 @@ personal-finance-advisor-bot/
 
 ---
 
-## 🚀 Quick Start & Installation
-
-### Prerequisites
-- Python 3.10 or higher installed on your system.
-- Web browser (Google Chrome, Microsoft Edge, Firefox, or Safari).
-
-### Option 1: 1-Click Launch (Windows)
-Double-click:
-`START_APP.bat`
-
-### Option 2: Terminal or PowerShell
-Navigate to the project folder:
-```bash
-cd personal-finance-advisor-bot
-```
-
-Install required packages:
-```bash
-pip install -r requirements.txt
-```
-*(On Windows systems with multiple Python versions, use `py -3.13 -m pip install -r requirements.txt`)*
-
-Run the application:
-```bash
-python app.py
-```
-*(Or `py app.py` / `py -3.13 app.py`)*
-
-Open your browser and visit:
-```
-http://127.0.0.1:5000
-```
 
 ---
 
