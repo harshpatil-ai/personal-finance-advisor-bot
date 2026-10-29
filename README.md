@@ -28,24 +28,6 @@ A modern, full-stack personal finance web application built for college students
 
 ---
 
-## 📁 Project Folder Structure
-
-```text
-personal-finance-advisor-bot/
-├── app.py                     # Flask REST API backend & database initialization
-├── requirements.txt           # Python package dependencies (Flask)
-├── test_app.py                # Automated backend test suite (6 unittests)
-├── START_APP.bat              # 1-Click double-clickable Windows launcher
-├── README.md                  # Comprehensive documentation and viva presentation guide
-├── .gitignore                 # Excludes caches and local database files
-├── finance.db                 # SQLite database pre-seeded with sample records
-├── templates/
-│   └── index.html             # Responsive single-page dashboard
-└── static/
-    ├── style.css              # Custom styling (white cards, light gray bg, responsive grid)
-    └── app.js                 # Frontend API controller, charts & budget tracker
-```
-
 
 ## 🔌 REST API Endpoints
 
