@@ -46,29 +46,6 @@ personal-finance-advisor-bot/
     └── app.js                 # Frontend API controller, charts & budget tracker
 ```
 
----
-
-
----
-
-## 🧪 Running Automated Tests
-
-A comprehensive unit test suite is included to verify all API endpoints and database operations:
-
-```bash
-python test_app.py
-```
-
-**Test Coverage:**
-- Health check verification (`GET /health`)
-- Main page template rendering (`GET /`)
-- Adding income and expense transactions (`POST /api/transactions`)
-- Transaction validation (rejecting negative amounts or invalid categories)
-- Dynamic summary calculations (`GET /api/summary`)
-- AI financial advice heuristics (`GET /api/advice`)
-- Demo data injection (`POST /api/demo-data`)
-
----
 
 ## 🔌 REST API Endpoints
 
@@ -87,9 +64,6 @@ python test_app.py
 
 ---
 
-## 📄 License & Disclaimer
-This project is open-source under the MIT License. Developed for educational, academic, and seminar presentation purposes.
-
 ### Personal Finance Advisor Bot 💰
 
 An AI-style personal finance assistant built with **Python, Flask, SQLite and JavaScript**.
@@ -104,22 +78,6 @@ An AI-style personal finance assistant built with **Python, Flask, SQLite and Ja
 - SQLite database for persistent local data
 - Demo/fallback advisor mode that works without an external AI API
 
-## Tech Stack
-Python • Flask • SQLite • HTML • CSS • JavaScript
-```
-## Project Structure
-
-```text
-personal-finance-advisor-bot/
-├── app.py
-├── requirements.txt
-├── README.md
-├── .gitignore
-├── templates/
-│   └── index.html
-└── static/
-    ├── style.css
-    └── app.js
 ```
 
 ## Project Documentation
