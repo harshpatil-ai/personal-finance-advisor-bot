@@ -89,3 +89,69 @@ python test_app.py
 
 ## 📄 License & Disclaimer
 This project is open-source under the MIT License. Developed for educational, academic, and seminar presentation purposes.
+
+### Personal Finance Advisor Bot 💰
+
+An AI-style personal finance assistant built with **Python, Flask, SQLite and JavaScript**.
+
+## Features
+- Income and expense tracking
+- Category-wise spending analysis
+- Budget overview and savings estimate
+- AI-style personalized financial insights
+- Monthly financial summary
+- Responsive dashboard UI
+- SQLite database for persistent local data
+- Demo/fallback advisor mode that works without an external AI API
+
+## Tech Stack
+Python • Flask • SQLite • HTML • CSS • JavaScript
+
+## Run locally
+
+```bash
+python -m venv venv
+```
+
+Windows:
+```bash
+venv\Scripts\activate
+```
+
+macOS/Linux:
+```bash
+source venv/bin/activate
+```
+
+Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+Start:
+```bash
+python app.py
+```
+
+Open:
+`http://127.0.0.1:5000`
+
+## Project Structure
+
+```text
+personal-finance-advisor-bot/
+├── app.py
+├── requirements.txt
+├── README.md
+├── .gitignore
+├── templates/
+│   └── index.html
+└── static/
+    ├── style.css
+    └── app.js
+```
+
+## Project Documentation
+
+📄[ [View Personal Finance Advisor Bot Report (PDF)](./Personal_Finance_Advisor_Bot_%20document%20final.pdf)
+](https://github.com/harshpatil-ai/personal-finance-advisor-bot/blob/3acffbbc70ef5a73271c31f829e6329df39d4f5c/README.md)
